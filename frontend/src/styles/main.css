@@ -1,0 +1,83 @@
+/*
+ * Copyright 2019 - 2021 VMware, Inc.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+@import "fonts.css";
+
+body {
+    font-family: proxima_nova_reg, sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+    margin: 40px;
+    background-color: #F7F7F7;
+}
+
+h1 {
+    font-family: proxima_nova_bold, sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 44px;
+    margin: 0 0 20px 0;
+}
+
+h2 {
+    font-family: proxima_nova_semibold, sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 28px;
+    margin: 100px 20px 0 0;
+}
+
+.ImagesForm {
+    display: flex;
+    align-items: center;
+}
+
+.ImagesForm__image-label {
+    font-family: proxima_nova_semibold, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    margin-right: 10px;
+}
+
+.ImagesForm__image-input {
+    box-sizing: border-box;
+    height: 30px;
+    width: 193px;
+    border: 1px solid #979797;
+    border-radius: 2px;
+    margin-right: 10px;
+    background-color: #FFFFFF;
+}
+
+.ImagesForm__submit-button {
+    height: 29px;
+    width: 80px;
+    border-radius: 2px;
+    padding: 0;
+    background-color: #00A390;
+    color: #F7F7F7;
+    font-family: proxima_nova_reg, sans-serif;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.ImagesDisplay__header-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.ImagesDisplay__destroy-session-button {
+    background: none;
+    color: #00A390;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    line-height: 17px;
+    font-family: proxima_nova_bold, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}

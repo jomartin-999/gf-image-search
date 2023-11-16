@@ -1,0 +1,12 @@
+
+.DS_Store
+.gitattributes
+frontend/README.md
+
+
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
