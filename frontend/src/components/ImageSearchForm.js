@@ -3,50 +3,54 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, {Component} from 'react';
-import imageService from "./ImageService";
-import propTypes from "prop-types";
+import React, {useState} from 'react';
 
-class ImageSearchForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {image: ''};
-    }
 
-    searchImages = async (event) => {
+const ImageSearchForm = ({setSearchResults, onClearResults}) => {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = async (event) => {
         event.preventDefault();
-        await imageService.searchImages(this.state.image.valueOf());
-        this.setState({image: ''});
-        await this.props.getImages();
+        onClearResults();
 
-    };
+        try {
+            const response = await fetch('/searchImages',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({searchQuery})
+            });
 
-    onImageSearchInputChange = (event) => {
-        this.setState({image: event.target.value});
-    };
+            const result = await response.json();
 
-    render() {
-        return (
-            <form className="ImagesForm" onSubmit={this.searchImages}>
-                <label className="ImagesForm__image-label">Enter Image Search Query:</label>
-                <input
-                    className="ImagesForm__image-input"
-                    data-qa="ImagesForm__image-input"
-                    type='text'
-                    value={this.state.image}
-                    onChange={this.onImageSearchInputChange}
-                />
-                <button
-                    className="ImagesForm__submit-button"
-                    data-qa="ImagesForm__submit-button"
-                    type="submit">Search</button>
-            </form>
-        );
-    }
+            setSearchResults(result)
+
+        } catch(error){
+            console.error('Error fetching images: ', error);
+        }
+
+        setSearchQuery('');
+
+};
+
+return (
+   <form className="ImagesForm" onSubmit={handleSearch}>
+
+         <input
+             className="ImagesForm__image-input"
+             type='text'
+              value={searchQuery}
+             onChange={(e) => setSearchQuery(e.target.value)}
+             placeholder="Enter your search"
+         />
+         <button
+          className="ImagesForm__submit-button"
+          type="submit">Search Images
+         </button>
+   </form>
+);
+
 }
 
 export default ImageSearchForm;
-
-ImageSearchForm.propTypes = {
-    getImages: propTypes.func
-};

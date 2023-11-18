@@ -3,36 +3,28 @@ Copyright 2019 - 2021 VMware, Inc.
 SPDX-License-Identifier: Apache-2.0
 */
 
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import ImageSearchForm from "./components/ImageSearchForm";
-import ImageService from "./components/ImageService";
-import ImageDisplay from "./components/ImageDisplay";
+import SearchResults from "./components/SearchResults";
 import './styles/main.css';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {images: []};
-    }
 
-    getImages = async () => {
-        const images = await ImageService.getImages();
-        this.setState({images})
+const App = () => {
+    const [searchResults, setSearchResults] = useState([]);
+
+    const handleClearResults = () => {
+         setSearchResults([]);
     };
 
-    async componentDidMount() {
-        await this.getImages();
-    }
 
-    render() {
-        return (
-            <div className="App" data-qa="App">
+    return (
+         <div className="App">
                 <h1>GemFire Image Search</h1>
-                <ImageSearchForm getImages={this.getImages}/>
-                <ImageDisplay getImages={this.getImages} images={this.state.images}/>
-            </div>
-        );
-    }
-}
+                <ImageSearchForm setSearchResults={setSearchResults} onClearResults={handleClearResults}/>
+                <SearchResults results={searchResults} onClearResults={handleClearResults} />
+         </div>
+    );
+
+};
 
 export default App;

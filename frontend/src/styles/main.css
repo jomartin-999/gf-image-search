@@ -44,8 +44,8 @@ h2 {
 
 .ImagesForm__image-input {
     box-sizing: border-box;
-    height: 30px;
-    width: 193px;
+    height: 2rem;
+    width: 30rem;
     border: 1px solid #979797;
     border-radius: 2px;
     margin-right: 10px;
@@ -53,11 +53,11 @@ h2 {
 }
 
 .ImagesForm__submit-button {
-    height: 29px;
-    width: 80px;
+    height: 2rem;
+    width: 12rem;
     border-radius: 2px;
     padding: 0;
-    background-color: #00A390;
+    background-color: #0882ca;
     color: #F7F7F7;
     font-family: proxima_nova_reg, sans-serif;
     font-size: 14px;
@@ -72,7 +72,7 @@ h2 {
 
 .ImagesDisplay__destroy-session-button {
     background: none;
-    color: #00A390;
+    color: #0882ca;
     border: none;
     padding: 0;
     font-size: 14px;
@@ -80,4 +80,17 @@ h2 {
     font-family: proxima_nova_bold, sans-serif;
     font-weight: bold;
     cursor: pointer;
+}
+
+.search-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-results img {
+    max-width: 27rem;
+    max-height: 15rem;
+    width: auto;
+    height: auto;
 }

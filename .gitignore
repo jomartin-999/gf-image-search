@@ -2,7 +2,7 @@
 .DS_Store
 .gitattributes
 frontend/README.md
-
+backend/static/images/*
 
 
 ### IntelliJ IDEA ###
