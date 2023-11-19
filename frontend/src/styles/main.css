@@ -31,7 +31,9 @@ h2 {
 
 .ImagesForm {
     display: flex;
+    flex-direction: row;
     align-items: center;
+    gap: 15px
 }
 
 .ImagesForm__image-label {
@@ -52,16 +54,21 @@ h2 {
     background-color: #FFFFFF;
 }
 
-.ImagesForm__submit-button {
-    height: 2rem;
-    width: 12rem;
+.ImagesForm button {
     border-radius: 2px;
-    padding: 0;
+    padding: 8px 16px;
+    cursor: pointer;
     background-color: #0882ca;
     color: #F7F7F7;
     font-family: proxima_nova_reg, sans-serif;
     font-size: 14px;
     line-height: 17px;
+    transition: background-color 0.3s ease;
+}
+
+.ImagesForm button:disabled{
+    background-color: #dddddd;
+    cursor: not-allowed;
 }
 
 .ImagesDisplay__header-wrapper {

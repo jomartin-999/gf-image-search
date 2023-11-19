@@ -4,35 +4,73 @@
  */
 
 import React, {useState} from 'react';
+import axios from "axios";
 
 
 const ImageSearchForm = ({setSearchResults, onClearResults}) => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [isLoadingEmbeddings, setIsLoadingEmbeddings] = useState(false);
+
 
     const handleSearch = async (event) => {
         event.preventDefault();
         onClearResults();
 
-        try {
-            const response = await fetch('/searchImages',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({searchQuery})
-            });
+        if (!isLoadingEmbeddings) {
+            try {
+                const response = await fetch('/searchImages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({searchQuery})
+                });
 
-            const result = await response.json();
+                const result = await response.json();
 
-            setSearchResults(result)
+                setSearchResults(result)
 
-        } catch(error){
-            console.error('Error fetching images: ', error);
+            } catch (error) {
+                console.error('Error fetching images: ', error);
+            }
+
+            setSearchQuery('');
         }
 
-        setSearchQuery('');
-
 };
+    const handleLoadEmbeddings = async () => {
+        try{
+            setIsLoadingEmbeddings(true)
+            const response = await axios.put('/loadEmbeddings');
+            console.log(response);
+        } catch (error){
+            console.error('Error loading embeddings:', error);
+        }finally{
+            setIsLoadingEmbeddings(false);
+        }
+    }
+
+    const createIndex = async () => {
+        try {
+
+            const response = await axios.post('/createIndex');
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error creating index:', error);
+        }
+    }
+
+    const deleteIndex = async () => {
+        try {
+
+            const response = await axios.delete('/deleteIndex');
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error deleting index:', error);
+        }
+    }
+
+
 
 return (
    <form className="ImagesForm" onSubmit={handleSearch}>
@@ -45,9 +83,29 @@ return (
              placeholder="Enter your search"
          />
          <button
-          className="ImagesForm__submit-button"
-          type="submit">Search Images
+          disabled={isLoadingEmbeddings}
+          type="submit">
+             Search Images
          </button>
+
+       <button
+          disabled={isLoadingEmbeddings}
+          type="button"
+          onClick={handleLoadEmbeddings}>
+           Load Embeddings
+       </button>
+       <button
+           disabled={isLoadingEmbeddings}
+           type="button"
+           onClick={createIndex}>
+           Create Index
+       </button>
+       <button
+           disabled={isLoadingEmbeddings}
+           type="button"
+           onClick={deleteIndex}>
+           Delete Index and Data
+       </button>
    </form>
 );
 

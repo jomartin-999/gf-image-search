@@ -13,7 +13,7 @@ const App = () => {
     const [searchResults, setSearchResults] = useState([]);
 
     const handleClearResults = () => {
-         setSearchResults([]);
+        setSearchResults([]);
     };
 
 
