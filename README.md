@@ -17,9 +17,21 @@ There are a few python packages you may need to install such as:
 - there may be others. You'll have to build and see what you have or don't have.
 
 ## Things to know
-- Currently, when a user clicks "load embeddings" the application randomly selects and encodes 1500 images.  Working to include embeddings on all 25k images from the data set.
-- The "load embeddings" currently takes about ~20 minutes for 1500 images.
-- Results returned will filter out results that have a score less than .60.
+- Currently, when a user clicks "load embeddings" the application will:
+  1. Determine if the `backend/static/images` directory exists and if there are any files in that directory.
+     2. If the directory does not exist, the application will create the directory, download the images dataset (~1.9 GB), unizip the file, and extract the images to the directory (~25k images)
+     3. If the directory DOES exist, then it will skip the above step.
+  2. Determine if the precomputed embeddings file exists. If it does not, then it will download the file.
+  3. The precomputed embeddings are then loaded into GemFire.
+
+If you would like to use your own images data set:
+  - The images must be placed in a folder with a path `backend/static/images`
+  - The images must be `.jpg` files.
+  - You must set `use_precomputed_embeddings` in the `embeddings_processor.py` to **False**. 
+  - The application will randomly select and encode 1500 images from this folder. This is only because the encoding takes time and memory. You can adjust this number if needed in the `embeddings_processor.py` file.  
+  - With 1500 images it currently takes about ~20 minutes to encode them. 
+
+When searching images, the application filters out results that have a score less than .60. This set in the `app.py` file, int the `/searchImages` endpoint.
  
 
 ## To run this app
@@ -34,9 +46,7 @@ There are a few python packages you may need to install such as:
 - navigate to the 'frontend' directory
 - run `npm install`
 - run `npm run build`
-- naviagte to the `backend` directory
-- You WILL need to add two directories to the "backend directory" : backend/**static**/**images**.  This is where you'll need to put your images to run through the model.
-- [This link](https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/datasets/unsplash-25k-photos.zip), will download a 25k image dataset to use OR you can use any photos or dataset of images you choose. 
+- navigate to the `backend` directory
 - run `python app.py`
 
-
+[Image Data Set](https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/datasets/unsplash-25k-photos.zip)

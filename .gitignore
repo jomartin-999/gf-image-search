@@ -2,7 +2,7 @@
 .DS_Store
 .gitattributes
 frontend/README.md
-backend/static/images/*
+backend/static/
 
 
 ### IntelliJ IDEA ###
@@ -10,3 +10,4 @@ backend/static/images/*
 *.iws
 *.iml
 *.ipr
+

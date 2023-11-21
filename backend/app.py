@@ -44,7 +44,7 @@ def load_embeddings():
         start_time = datetime.now()
         start_timestamp_string = start_time.strftime("%Y-%m-%d %H:%M:%S")
 
-        print("Sending Request to GemFire (1500 embeddings): " + start_timestamp_string)
+        print("Sending Request to GemFire: " + start_timestamp_string)
         response = requests.put(gemfire_bulk_load_api, headers=headers, json=embeddings_to_load)
 
         end_time = datetime.now()
