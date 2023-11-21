@@ -1,6 +1,4 @@
 from datetime import datetime
-import json
-
 from flask import Flask, send_from_directory, request, jsonify, url_for
 import embeddings_processor
 import requests
@@ -8,6 +6,7 @@ import requests
 app = Flask(__name__, static_url_path='', static_folder="../frontend/build")
 app.config['IMAGES_FOLDER'] = 'static/images'
 app.add_url_rule('/images/<path:filename>', endpoint='serve_images')
+base_url = "http://localhost:8081/gemfire-vectordb/v1"
 
 
 @app.route('/')
@@ -18,7 +17,7 @@ def index():
 @app.route('/createIndex', methods=['POST'])
 def create_index():
     try:
-        gemfire_create_index_api = 'http://localhost:8081/gemfire-vectordb/v1/image_search'
+        gemfire_create_index_api = base_url + '/image_search'
         headers = {'Content-Type': 'application/json'}
 
         response = requests.post(gemfire_create_index_api, headers=headers, json={})
@@ -37,7 +36,7 @@ def create_index():
 def load_embeddings():
     try:
         embeddings_to_load = embeddings_processor.load_embeddings(app.config['IMAGES_FOLDER'])
-        gemfire_bulk_load_api = 'http://localhost:8081/gemfire-vectordb/v1/image_search/keys'
+        gemfire_bulk_load_api = base_url + '/image_search/keys'
 
         headers = {'Content-Type': 'application/json'}
 
@@ -74,7 +73,7 @@ def search_images():
         search_query = data.get('searchQuery')
         search_query_embedding = embeddings_processor.create_query_embedding(search_query)
 
-        gemfire_query_api = 'http://localhost:8081/gemfire-vectordb/v1/image_search/query'
+        gemfire_query_api = base_url + '/image_search/query'
         headers = {'Content-Type': 'application/json'}
 
         response = requests.post(gemfire_query_api, headers=headers, json=search_query_embedding)
@@ -97,7 +96,7 @@ def search_images():
 @app.route('/deleteIndex', methods=['DELETE'])
 def delete_index():
     try:
-        gemfire_delete_index_api = 'http://localhost:8081/gemfire-vectordb/v1/image_search'
+        gemfire_delete_index_api = base_url + '/image_search'
         headers = {'Content-Type': 'application/json'}
 
         response = requests.delete(gemfire_delete_index_api, headers=headers, json={'delete-data': 'Y'})

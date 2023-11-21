@@ -12,12 +12,15 @@ An image search app using GemFire vectorDB
 
 There are a few python packages you may need to install such as:
 - sentence Transformer 
-- pytorch
+- pytorch (pip3 install torch torchvision)
 - PIL
 - there may be others. You'll have to build and see what you have or don't have.
 
 ## Things to know
-- Currently, when a user clicks "load embeddings" the application will:
+
+The application currently expects to find the GemFire `--http-service-port`  at 8081 and running at `localhost`. If you change this port, you will need to update the `baseUrl` in the `app.py` file with the new host and port.
+
+Currently, when a user clicks "load embeddings" the application will:
   1. Determine if the `backend/static/images` directory exists and if there are any files in that directory.
      2. If the directory does not exist, the application will create the directory, download the images dataset (~1.9 GB), unizip the file, and extract the images to the directory (~25k images)
      3. If the directory DOES exist, then it will skip the above step.

@@ -1,5 +1,4 @@
 from datetime import datetime
-from itertools import islice
 from sentence_transformers import SentenceTransformer, util
 from PIL import Image
 import random
