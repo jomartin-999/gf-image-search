@@ -31,7 +31,9 @@ If you would like to use your own images data set:
   - The application will randomly select and encode 1500 images from this folder. This is only because the encoding takes time and memory. You can adjust this number if needed in the `embeddings_processor.py` file.  
   - With 1500 images it currently takes about ~20 minutes to encode them. 
 
-When searching images, the application filters out results that have a score less than .60. This set in the `app.py` file, int the `/searchImages` endpoint.
+When searching images 
+- The application filters out results that have a score less than .60. This set in the `app.py` file, in the `/searchImages` endpoint.
+- The search query sets 'k:100' - this means it will return the top 100 results from the query. This is set in the `embeddings_processor.py` -> `def create_query_embedding(search_query):` 
  
 
 ## To run this app
