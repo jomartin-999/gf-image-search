@@ -7,7 +7,7 @@ import React, {useState} from 'react';
 import axios from "axios";
 
 
-const ImageSearchForm = ({setSearchResults, onClearResults}) => {
+const ImageSearchForm = ({setSearchResults, onClearResults, onSearch}) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoadingEmbeddings, setIsLoadingEmbeddings] = useState(false);
 
@@ -29,6 +29,7 @@ const ImageSearchForm = ({setSearchResults, onClearResults}) => {
                 const result = await response.json();
 
                 setSearchResults(result)
+                onSearch(searchQuery)
 
             } catch (error) {
                 console.error('Error fetching images: ', error);

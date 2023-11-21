@@ -75,6 +75,7 @@ h2 {
     display: flex;
     flex-direction: row;
     align-items: baseline;
+    margin-bottom: 16px;
 }
 
 .ImagesDisplay__destroy-session-button {
@@ -100,4 +101,8 @@ h2 {
     max-height: 15rem;
     width: auto;
     height: auto;
+}
+
+.search-query {
+    margin-bottom: 16px; /* Adjust the margin as needed */
 }

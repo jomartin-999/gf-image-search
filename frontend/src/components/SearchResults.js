@@ -5,8 +5,9 @@
 
 import React, {useEffect, useState} from 'react';
 
-const SearchResults = ({results, onClearResults}) => {
+const SearchResults = ({results, onClearResults, searchQuery}) => {
     const [showNoResults, setShowNoResults] = useState(false);
+
 
     useEffect(() => {
         setShowNoResults(results.length === 0);
@@ -22,18 +23,22 @@ const SearchResults = ({results, onClearResults}) => {
                     onClick={() => {
                         onClearResults();
                         setShowNoResults(false);
+
                     }}>
                     Clear Results
                 </button>
             </div>
+            {searchQuery && (
+                <div className="search-query">
+                    <p>Search query: "{searchQuery}"</p>
+                </div>
+            )}
             <div className="search-results">
-                {showNoResults ? (
-                    <p>No Results</p>
-                ) : (
+                {
                     results.map((imageUrl, index) => (
                         <img key={index} src={imageUrl} alt={`Image ${index + 1}`} />
                     ))
-                )}
+                }
             </div>
         </div>
     );
