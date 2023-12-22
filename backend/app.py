@@ -17,12 +17,12 @@ def index():
 @app.route('/createIndex', methods=['POST'])
 def create_index():
     try:
-        gemfire_create_index_api = base_url + '/image_search'
+        gemfire_create_index_api = base_url + '/indexes'
         headers = {'Content-Type': 'application/json'}
 
-        response = requests.post(gemfire_create_index_api, headers=headers, json={})
+        response = requests.post(gemfire_create_index_api, headers=headers, json={"name":"image_search"})
 
-        if response.status_code == 200:
+        if response.status_code == 201:
 
             return jsonify({"status": "success", "message": "Successfully Created Index "})
         else:
@@ -32,11 +32,12 @@ def create_index():
         return jsonify({"error": str(e)})
 
 
-@app.route('/loadEmbeddings', methods=['PUT'])
+@app.route('/loadEmbeddings', methods=['POST'])
 def load_embeddings():
     try:
         embeddings_to_load = embeddings_processor.load_embeddings(app.config['IMAGES_FOLDER'])
-        gemfire_bulk_load_api = base_url + '/image_search/keys'
+        print("Embeddings to load: ", embeddings_to_load)
+        gemfire_bulk_load_api = base_url + '/indexes/image_search/embeddings'
 
         headers = {'Content-Type': 'application/json'}
 
@@ -44,13 +45,13 @@ def load_embeddings():
         start_timestamp_string = start_time.strftime("%Y-%m-%d %H:%M:%S")
 
         print("Sending Request to GemFire: " + start_timestamp_string)
-        response = requests.put(gemfire_bulk_load_api, headers=headers, json=embeddings_to_load)
+        response = requests.post(gemfire_bulk_load_api, headers=headers, json=embeddings_to_load)
 
         end_time = datetime.now()
         end_timestamp_string = end_time.strftime("%Y-%m-%d %H:%M:%S")
         print("Embeddings Loaded Into GemFire: " + end_timestamp_string)
 
-        if response.status_code == 200:
+        if response.status_code == 204:
             result = response.json()
             return jsonify(result)
         else:
@@ -73,7 +74,7 @@ def search_images():
         search_query = data.get('searchQuery')
         search_query_embedding = embeddings_processor.create_query_embedding(search_query)
 
-        gemfire_query_api = base_url + '/image_search/query'
+        gemfire_query_api = base_url + '/indexes/image_search/query'
         headers = {'Content-Type': 'application/json'}
 
         response = requests.post(gemfire_query_api, headers=headers, json=search_query_embedding)
@@ -95,13 +96,13 @@ def search_images():
 
 @app.route('/deleteIndex', methods=['DELETE'])
 def delete_index():
+
     try:
-        gemfire_delete_index_api = base_url + '/image_search'
-        headers = {'Content-Type': 'application/json'}
+        gemfire_delete_index_api = base_url + '/indexes/image_search'
 
-        response = requests.delete(gemfire_delete_index_api, headers=headers, json={'delete-data': 'Y'})
+        response = requests.delete(gemfire_delete_index_api)
 
-        if response.status_code == 200:
+        if response.status_code == 204:
 
             return jsonify({"status": "success", "message": "Successfully Deleted Index "})
         else:

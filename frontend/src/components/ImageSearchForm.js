@@ -42,7 +42,7 @@ const ImageSearchForm = ({setSearchResults, onClearResults, onSearch}) => {
     const handleLoadEmbeddings = async () => {
         try{
             setIsLoadingEmbeddings(true)
-            const response = await axios.put('/loadEmbeddings');
+            const response = await axios.post('/loadEmbeddings');
             console.log(response);
         } catch (error){
             console.error('Error loading embeddings:', error);

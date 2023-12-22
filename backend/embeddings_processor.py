@@ -16,7 +16,7 @@ PHOTO_URL = 'http://sbert.net/datasets/' + PHOTO_FILENAME
 
 
 def load_embeddings(images_folder):
-    embeddings_to_load = {"embeddings": []}
+    embeddings_to_load = []
     use_precomputed_embeddings = True
 
     if use_precomputed_embeddings:
@@ -28,19 +28,17 @@ def load_embeddings(images_folder):
         return create_embeddings_precomputed(embeddings_to_load)
     else:
         images = [os.path.join(STATIC_IMAGES_FOLDER, image) for image in
-                  os.listdir(os.path.join('backend', images_folder)) if
+                  os.listdir(os.path.join(STATIC_IMAGES_FOLDER)) if
                   image.lower().endswith('.jpg')]
-        random_images = random.sample(images, 1500)
+        random_images = random.sample(images, 100)
 
         start_time = datetime.now()
         print("Creating Embedding: " + start_time.strftime("%Y-%m-%d %H:%M:%S"))
 
         for index, image in enumerate(random_images):
-            vector = [create_vector_from_image(image)]
+            vector = create_vector_from_image(image)
             image_embedding = {"key": os.path.basename(image), "vector": vector.tolist()}
-            embeddings_to_load["embeddings"].append(image_embedding)
-            if index % 100 == 0:
-                print("Processing image index:", index)
+            embeddings_to_load.append(image_embedding)
 
         end_time = datetime.now()
         print("Embeddings Created: " + end_time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -76,7 +74,8 @@ def create_embeddings_precomputed(embeddings_to_load):
 
     for img_name, vector in zip(img_names, img_emb):
         image_embedding = {"key": os.path.basename(img_name), "vector": vector.tolist()}
-        embeddings_to_load["embeddings"].append(image_embedding)
+        embeddings_to_load.append(image_embedding)
+
     return embeddings_to_load
 
 
@@ -90,9 +89,8 @@ def create_query_embedding(search_query):
     model = SentenceTransformer('clip-ViT-B-32')
     query_vector = model.encode(search_query)
     query_embedding = {
-        "embedding-type": "float",
-        "embedding": query_vector.tolist(),
-        "k": 100,
+        "vector": query_vector.tolist(),
+        "top-k": 100,
         "k-per-bucket": 100,
         "include-metadata": False
     }
