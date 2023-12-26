@@ -36,7 +36,6 @@ def create_index():
 def load_embeddings():
     try:
         embeddings_to_load = embeddings_processor.load_embeddings(app.config['IMAGES_FOLDER'])
-        print("Embeddings to load: ", embeddings_to_load)
         gemfire_bulk_load_api = base_url + '/indexes/image_search/embeddings'
 
         headers = {'Content-Type': 'application/json'}
